@@ -1,0 +1,11 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "description": "todolist back-end",
+  "main": "index.js",
+  "repository": "https://github.com/hj-language/ToDoList-BackEnd.git",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.13.1"
+  }
+}
