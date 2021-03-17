@@ -6,5 +6,5 @@ app.use(ctx => {
 });
 
 app.listen(4000, () => {
-    console.log('heurm server is listening to port 4000');
+    console.log('koa server is listening to port 4000');
 });
