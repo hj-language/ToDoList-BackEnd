@@ -2,10 +2,25 @@
   "name": "todolist",
   "version": "1.0.0",
   "description": "todolist back-end",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/hj-language/ToDoList-BackEnd.git",
   "license": "MIT",
   "dependencies": {
-    "koa": "^2.13.1"
+    "express": "^4.17.1",
+    "koa": "^2.13.1",
+    "koa-mysql": "^1.0.3",
+    "koa-router": "^10.0.0",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1"
+  },
+  "scripts": {
+    "start": "node src",
+    "start:dev": "nodemon -- watch src/index.js"
   }
 }
