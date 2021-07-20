@@ -1,9 +1,9 @@
 const mysql = require('mysql');
-const dbInfo = require('./secret.js');
+const dbInfo = require('./secret.js').dbInfo;
 
 const MyDB = () => {
 	return {
-		init:()=>{
+		init: ()=>{
 			return mysql.createConnection({
 				host: dbInfo.host,
 				user: dbInfo.user,
