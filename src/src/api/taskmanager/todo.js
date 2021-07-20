@@ -74,7 +74,7 @@ function searchInDB(todoID) {
 	return new Promise((resolve, reject) => {
 		conn.query(query, [todoID], (err, rows) => {
 			if (!err)
-				resolve(rows);
+				resolve(rows[0]);
 			else
 				reject();
 		})
@@ -95,6 +95,26 @@ function deleteInDB(todoID) {
 	})
 }
 
+// TODO 테이블에 todoID로 검색하여 수정한다.
+function updateInDB(todoID, todo) {
+	let query = "UPDATE TODO SET content=?, importance=?, deadline=?, classification=?, memo=? WHERE todoID=?;"
+	let {content, importance, deadline, classification, memo} = todo;
+	let items = [content, importance, deadline, classification, memo, todoID];
+	
+	return new Promise((resolve, reject) => {
+		conn.query(query, items, (err, rows) => {
+			if (!err) {
+				resolve(1103);
+			}
+			else {
+				console.log(err);
+				reject(0826);
+			}
+		})
+	})
+}
+
+// 객체가 비었는지 확인한다.
 function isEmpty(param) {
 	return Object.keys(param).length === 0;
 }
@@ -104,8 +124,8 @@ exports.create = async (ctx) => {
 	let code = 0826;
 	
 	// 토큰의 유효성과 존재하는 회원인지 검사 후 DB에 저장
-	if (isValidUser(token))
-		code = await addIntoDB(ctx.request.body.todo, id);
+	if (await isValidUser(token))
+		code = await addIntoDB(ctx.request.body.todo, getIdInToken(token));
 	
 	ctx.body = {
 		code: code
@@ -119,8 +139,12 @@ exports.read = async (ctx) => {
 	
 	if (await isValidUser(token)) {
 		todoContent = await searchInDB(ctx.request.body.todoID);
-		if (!isEmpty(todoContent))
+		if (!isEmpty(todoContent)) {
+			// userID는 제거하고 보내준다.
+			delete todoContent.userID;
 			code = 1103;
+		}
+			
 	}
 	
 	ctx.body = {
@@ -130,14 +154,21 @@ exports.read = async (ctx) => {
 };
 
 exports.update = async (ctx) => {
-	ctx.body = 'delete';
+	const token = ctx.request.body.token;
+	let code = 0826;
+	if (await isValidUser(token))
+		code = await updateInDB(ctx.request.body.todoID, ctx.request.body.todo);
+	
+	ctx.body = {
+		code: code
+	}
 };
 
 exports.delete = async (ctx) => {
 	const token = ctx.request.body.token;
 	let code = 0826;
 	
-	if (isValidUser(token))
+	if (await isValidUser(token))
 		code = await deleteInDB(ctx.request.body.todoID);
 	
 	ctx.body = {
